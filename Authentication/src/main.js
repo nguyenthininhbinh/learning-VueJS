@@ -6,14 +6,14 @@ import store from "./store";
 import axios from "axios";
 
 axios.defaults.baseURL = "https://pr-axios.firebaseio.com";
-axios.defaults.headers.common["Authorization"] = "abc";
+// axios.defaults.headers.common["Authorization"] = "abc";
 axios.defaults.headers.get["Accepts"] = "application/json";
 
-const reqInterceptor = axios.interceptors.request.use(config => {
+const reqInterceptor = axios.interceptors.request.use((config) => {
   console.log("Request Interceptor", config);
   return config;
 });
-const resInterceptor = axios.interceptors.response.use(res => {
+const resInterceptor = axios.interceptors.response.use((res) => {
   console.log("Response Interceptor", res);
   return res;
 });
@@ -24,10 +24,10 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   mode: "history",
   store,
-  routes
+  routes,
 });
 new Vue({
   el: "#app",
   router,
-  render: h => h(App)
+  render: (h) => h(App),
 });
