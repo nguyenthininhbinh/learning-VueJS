@@ -2,6 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "./axios";
 import globalaxios from "./axios";
+import { routes } from "./routes";
+
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
@@ -13,11 +15,19 @@ export default new Vuex.Store({
     authUser(state, userData) {
       (state.idToken = userData.token), (state.userId = userData.userId);
     },
-    storeUser(state, userData) {
+    storeUser(state, user) {
       state.user = user;
+    },
+    clearAuthData(state) {
+      (state.idToken = null), (state.userId = null);
     }
   },
   actions: {
+    setLogOutTimer({ commit }, expirationTime) {
+      setTimeout(() => {
+        commit("clearAuthData");
+      }, expirationTime);
+    },
     signup({ commit, dispatch }, authData) {
       axios
         .post("/accounts:signUp?key=AIzaSyD9bww1jZTvP3nHUfh7VxJGT4Z-NaM5t7M", {
@@ -32,6 +42,7 @@ export default new Vuex.Store({
             userId: res.data.localId
           });
           dispatch("storeUser", authData);
+          dispatch("setLogOutTimer");
         })
         .catch(error => {
           if (error.response) {
@@ -43,7 +54,7 @@ export default new Vuex.Store({
           }
         });
     },
-    login({ commit }, authData) {
+    login({ commit, dispatch }, authData) {
       axios
         .post(
           "/accounts:signInWithPassword?key=AIzaSyD9bww1jZTvP3nHUfh7VxJGT4Z-NaM5t7M",
@@ -59,6 +70,7 @@ export default new Vuex.Store({
             token: res.data.idToken,
             userId: res.data.localId
           });
+          dispatch("setLogOutTimer", res.data.expirationTime);
         })
         .catch(error => {
           if (error.response) {
@@ -69,6 +81,12 @@ export default new Vuex.Store({
             console.log("Error", error.message);
           }
         });
+    },
+    logout({ commit }) {
+      commit("clearAuthData");
+
+      let routes = routes.replace("/signIn");
+      // routes.replace("/signIn");
     },
     storeUser({ commit, state }, userData) {
       if (!state.idToken) {
@@ -105,4 +123,7 @@ export default new Vuex.Store({
       return state.user;
     }
   }
+  // isAuthenticated(state) {
+  //   return state.idToken !== null;
+  // }
 });

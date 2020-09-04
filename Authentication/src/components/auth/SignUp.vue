@@ -50,7 +50,7 @@
             <label class="form-check-label">Accept Terms of Use</label>
           </div>
 
-          <button type="submit">Submit</button>
+          <button class="btn btn-default navbar-btn" type="submit">Submit</button>
         </div>
       </div>
     </form>
