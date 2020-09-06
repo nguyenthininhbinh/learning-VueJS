@@ -2,7 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "./axios";
 import globalaxios from "./axios";
-import { routes } from "./routes";
+import router from "./routes";
+// import VueRouter from "vue-router";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -84,10 +85,9 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit("clearAuthData");
-
-      let routes = routes.replace("/signIn");
-      // routes.replace("/signIn");
+      router.replace("/signIn");
     },
+
     storeUser({ commit, state }, userData) {
       if (!state.idToken) {
         return;
@@ -122,8 +122,8 @@ export default new Vuex.Store({
     user(state) {
       return state.user;
     }
+    // isAuthenticated(state) {
+    //   return state.idToken !== null;
+    // }
   }
-  // isAuthenticated(state) {
-  //   return state.idToken !== null;
-  // }
 });

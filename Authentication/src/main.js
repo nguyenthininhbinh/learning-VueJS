@@ -1,9 +1,10 @@
 import Vue from "vue";
 import App from "./App.vue";
-import VueRouter from "vue-router";
-import { routes } from "./routes";
+// import VueRouter from "vue-router";
+// import { routes } from "./routes";
 import store from "./store";
 import axios from "axios";
+import router from "./routes";
 
 axios.defaults.baseURL = "https://pr-axios.firebaseio.com";
 // axios.defaults.headers.common["Authorization"] = "abc";
@@ -20,12 +21,12 @@ const resInterceptor = axios.interceptors.response.use(res => {
 
 axios.interceptors.request.eject(reqInterceptor);
 axios.interceptors.response.eject(resInterceptor);
-Vue.use(VueRouter);
-const router = new VueRouter({
-  mode: "history",
-  store,
-  routes
-});
+// Vue.use(VueRouter);
+// const router = new VueRouter({
+//   mode: "history",
+//   store,
+//   routes
+// });
 new Vue({
   el: "#app",
   store,
