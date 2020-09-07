@@ -27,6 +27,7 @@ axios.interceptors.response.eject(resInterceptor);
 //   store,
 //   routes
 // });
+
 new Vue({
   el: "#app",
   store,
