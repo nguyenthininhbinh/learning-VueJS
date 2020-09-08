@@ -80,7 +80,7 @@
                   @blur="$v.hobbyInputs.$each[index].value.$touch()"
                   v-model="hobbyInput.value"
                 />
-                <button @click="onDeleteHobby(hobbyInput.id)" type="button">X</button>
+                <button @click="onDeleteHobby(hobbyInput.id)" class="button" type="button">X</button>
               </div>
               <p
                 v-if="!$v.hobbyInputs.minLen"
@@ -98,7 +98,7 @@
             />
             <label class="form-check-label">Accept Terms of Use</label>
           </div>
-          <button class="btn btn-default navbar-btn" type="submit">Submit</button>
+          <button class="btn btn-default navbar-btn" type="submit" :disabled="$v.$invalid">Submit</button>
         </div>
       </div>
     </form>
@@ -115,6 +115,7 @@ import {
   sameAs,
   requiredUnless,
 } from "vuelidate/lib/validators";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -131,6 +132,14 @@ export default {
     email: {
       email,
       required,
+      unique: (val) => {
+        if (val === "") return true;
+        return axios
+          .get('/users.json?orderBy="email"&equalTo="' + val + '"')
+          .then((res) => {
+            return Object.keys(res.data).length === 0;
+          });
+      },
     },
     age: {
       required,
@@ -196,7 +205,7 @@ export default {
 .button {
   background: purple;
   color: #fff;
-  padding: 7px 15px;
+  padding: 3px 12px;
   border-radius: 7px;
 }
 .form-group.invalid input {
@@ -204,13 +213,6 @@ export default {
   background-color: bisque;
 }
 .form-group.invalid label {
-  color: red;
-}
-.input.invalid input {
-  border: 1px solid red;
-  background-color: bisque;
-}
-.input.invalid label {
   color: red;
 }
 </style>

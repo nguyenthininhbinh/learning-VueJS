@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "./axios";
-import globalAxios from "./axios";
+import globalAxios from "axios";
 import router from "./routes";
 
 Vue.use(Vuex);
@@ -52,7 +52,7 @@ export default new Vuex.Store({
           localStorage.setItem("expirationDate", res.data.expirationDate);
 
           dispatch("storeUser", authData);
-          dispatch("setLogOutTimer");
+          // dispatch("setLogOutTimer");
         })
         .catch(error => {
           if (error.response) {
